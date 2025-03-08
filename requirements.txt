@@ -1,3 +1,4 @@
 aphrodite-engine
 runpod
 cryptography
+requests
