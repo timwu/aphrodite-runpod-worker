@@ -14,7 +14,7 @@ else:
 def start_aphrodite_engine():
     """Starts the aphrodite-engine binary as a background process."""
     try:
-        cmd = ["aphrodite-engine", "run"]
+        cmd = ["aphrodite", "run"]
 
         model_file = os.environ.get("MODEL_FILE")
         if model_file:
