@@ -35,7 +35,7 @@ def start_aphrodite_engine():
 
         cmd.extend(["--gpu-memory-utilization", "0.95", "--host", "0.0.0.0", "--port", "2424"])
 
-        process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        process = subprocess.Popen(cmd, stdout=None, stderr=None)
         
         print(f"Started aphrodite with PID: {process.pid}")
 
