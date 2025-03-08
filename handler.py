@@ -14,12 +14,13 @@ else:
 def start_aphrodite_engine():
     """Starts the aphrodite-engine binary as a background process."""
     try:
-        cmd = ["aphrodite", "run"]
+        if not os.environ.get("MODEL_FILE"):
+            raise Exception("MODEL_FILE environment variable not set.")
+        if not os.path.exists(os.environ.get("MODEL_FILE")):
+            raise Exception(f"MODEL_FILE {os.environ.get('MODEL_FILE')} does not exist.")
 
-        model_file = os.environ.get("MODEL_FILE")
-        if model_file:
-            cmd.extend(["--model", model_file])
-
+        cmd = ["aphrodite", "run", os.environ.get("MODEL_FILE")]
+        
         context_size = os.environ.get("CONTEXT_SIZE")
         if context_size and context_size.isdigit():
             cmd.extend(["--max-model-len", context_size])
@@ -42,6 +43,10 @@ def start_aphrodite_engine():
         start_time = time.time()
         timeout = 600  # 10 minutes in seconds
         while time.time() - start_time < timeout:
+            
+            if process.poll() is not None:
+                raise Exception(f"aphrodite process exited with code {process.poll()}")
+
             try:
                 response = requests.get("http://localhost:2424/v1/completions")
                 if response.status_code == 200:
