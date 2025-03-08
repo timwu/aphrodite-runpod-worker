@@ -37,7 +37,7 @@ def start_aphrodite_engine():
 
         process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         
-        print(f"Started aphrodite-engine with PID: {process.pid}")
+        print(f"Started aphrodite with PID: {process.pid}")
 
         start_time = time.time()
         timeout = 600  # 10 minutes in seconds
@@ -45,23 +45,23 @@ def start_aphrodite_engine():
             try:
                 response = requests.get("http://localhost:2424/v1/completions")
                 if response.status_code == 200:
-                    print("aphrodite-engine is ready.")
+                    print("aphrodite is ready.")
                     break
                 else:
-                    print(f"aphrodite-engine not ready yet. Status code: {response.status_code}")
+                    print(f"aphrodite not ready yet. Status code: {response.status_code}")
             except requests.exceptions.ConnectionError:
-                print("aphrodite-engine not ready yet. Connection refused.")
+                print("aphrodite not ready yet. Connection refused.")
             except json.JSONDecodeError:
-                print("aphrodite-engine not ready yet. Invalid JSON response.")
+                print("aphrodite not ready yet. Invalid JSON response.")
             time.sleep(0.25)
         else:
-            print("Timeout: aphrodite-engine did not become ready within 10 minutes.")
+            print("Timeout: aphrodite did not become ready within 10 minutes.")
 
             
     except FileNotFoundError:
-        print("Error: aphrodite-engine binary not found.")
+        print("Error: aphrodite binary not found.")
     except Exception as e:
-        print(f"Error starting aphrodite-engine: {e}")
+        print(f"Error starting aphrodite: {e}")
 
 def handler(event):
     inp = event["input"]
