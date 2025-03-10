@@ -35,6 +35,7 @@ def start_aphrodite_engine():
                     cmd.extend(["--pipeline-parallel-size", str(n_gpu)])
 
         cmd.extend(["--gpu-memory-utilization", "0.95", "--host", "0.0.0.0", "--port", "2424"])
+        cmd.extend(["--single-user-mode", "--enforce-eager", "--enable-prefix-caching"])
 
         process = subprocess.Popen(cmd, stdout=None, stderr=None)
         
