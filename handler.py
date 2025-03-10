@@ -42,35 +42,21 @@ def start_aphrodite_engine():
 
         start_time = time.time()
         timeout = 600  # 10 minutes in seconds
-        message_delay = 40
         while time.time() - start_time < timeout:
             
             if process.poll() is not None:
                 raise Exception(f"aphrodite process exited with code {process.poll()}")
-
-            message = None
-
             try:
                 response = requests.get("http://localhost:2424/v1/completions")
                 if response.status_code == 200:
                     print("aphrodite is ready.")
                     break
-                else:
-                    message = f"aphrodite not ready yet. Status code: {response.status_code}"
             except requests.exceptions.ConnectionError:
-                message = "aphrodite not ready yet. Connection refused."
+                pass
             except json.JSONDecodeError:
-                message = "aphrodite not ready yet. Invalid JSON response."
-
-            # Reduce print frequency, once every 10 seconds
-            if message:
-                if message_delay == 0:
-                    print(message)
-                    message_delay = 40
-                else:
-                    message_delay -= 1
-            
+                pass
             time.sleep(0.25)
+
         else:
             print("Timeout: aphrodite did not become ready within 10 minutes.")
 
